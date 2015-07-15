@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>2D Sierpinski Gasket</title>
+
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+uniform float uDegree;
+
+void
+main()
+{
+	float x = vPosition[0];
+	float y = vPosition[1];
+	
+	float d = sqrt(x * x + y * y);
+	float f = uDegree * (3.1415 / 180.0);
+
+	float newx = x * cos(f * d) - y * sin(f * d);
+	float newy = x * sin(f * d) + y * cos(f * d);
+	
+    gl_Position = vec4(newx, newy, vPosition[2], 2);
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+void
+main()
+{
+    gl_FragColor = vec4( 0.1, 0.6, 0.8, 1.0 );
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="gasket2.js"></script>
+</head>   
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<br />
+Number of subdivisions: <input type="range" id="divisions" min="0" max="7" onchange="onCanged()">
+<br />
+Degrees: <input type="range" id="degrees" min="0" max="90" value="30" onchange="onCanged()">
+</body>
+</html>
